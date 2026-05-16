@@ -73,7 +73,7 @@ code, kbd, .mono {
 }
 
 section {
-  padding-block: 120px;
+  padding-block: 72px;
   position: relative;
   counter-increment: section;
 }
@@ -149,5 +149,5 @@ section + section { border-top: 1px solid var(--border-soft); }
 @media (max-width: 768px) {
   h1 { font-size: 2.25rem; }
   h2 { font-size: 1.625rem; }
-  section { padding-block: 80px; }
+  section { padding-block: 56px; }
 }

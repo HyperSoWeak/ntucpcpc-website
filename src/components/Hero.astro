@@ -23,7 +23,7 @@ import Countdown from './Countdown.astro';
 </section>
 
 <style>
-  .hero { padding-block: 120px 80px; }
+  .hero { padding-block: 96px 64px; }
 
   .prompt {
     color: var(--fg-dim);
@@ -61,6 +61,15 @@ import Countdown from './Countdown.astro';
 
   .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
   .cta .btn { font-family: var(--font-mono); }
+  /* keep button width stable so the hover boundary never shifts past the cursor */
+  .cta-register {
+    min-width: 12ch;
+    justify-content: flex-start;
+  }
+  .cta-register .label {
+    display: inline-block;
+    white-space: nowrap;
+  }
 </style>
 
 <script>
@@ -70,6 +79,7 @@ import Countdown from './Countdown.astro';
     const original = btn.textContent ?? '[ register ]';
     const hover = `$ xdg-open ${SITE.registerUrl}`;
     let typing: number | null = null;
+    let state: 'idle' | 'hover' = 'idle';
     function type(target: string) {
       if (typing !== null) { clearInterval(typing); typing = null; }
       let i = 0;
@@ -81,9 +91,19 @@ import Countdown from './Countdown.astro';
       }, 12);
     }
     const a = btn.closest('a')!;
-    a.addEventListener('mouseenter', () => type(hover));
-    a.addEventListener('mouseleave', () => type(original));
-    a.addEventListener('focus', () => type(hover));
-    a.addEventListener('blur', () => type(original));
+    function enter() {
+      if (state === 'hover') return;
+      state = 'hover';
+      type(hover);
+    }
+    function leave() {
+      if (state === 'idle') return;
+      state = 'idle';
+      type(original);
+    }
+    a.addEventListener('mouseenter', enter);
+    a.addEventListener('mouseleave', leave);
+    a.addEventListener('focus', enter);
+    a.addEventListener('blur', leave);
   }
 </script>

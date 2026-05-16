@@ -69,6 +69,7 @@ const items = [
   ];
 
   logo.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     clicks += 1;
     logo.classList.remove('pulse');
     void (logo as HTMLElement).offsetWidth;
