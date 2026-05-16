@@ -1,0 +1,46 @@
+---
+import { DATES } from '@/lib/config';
+const deadline = DATES.registerClose.toISOString();
+---
+<div class="countdown mono" data-deadline={deadline}>
+  <span class="prefix">// T-minus</span>
+  <span class="value" id="countdown-value">--d --h --m --s</span>
+  <span class="suffix">until 報名截止</span>
+</div>
+
+<style>
+  .countdown {
+    color: var(--fg-dim);
+    font-size: 0.875rem;
+    margin-top: 24px;
+  }
+  .value { color: var(--accent); margin-inline: 8px; }
+  .countdown.closed .value { color: var(--fg-mute); text-decoration: line-through; }
+  .countdown.closed .suffix::before { content: '已截止 '; color: var(--warn); }
+</style>
+
+<script>
+  import { formatRemaining, getState } from '@/lib/countdown';
+  import { DATES } from '@/lib/config';
+
+  const root = document.querySelector('.countdown')!;
+  const value = document.getElementById('countdown-value')!;
+  const suffix = root.querySelector('.suffix')!;
+
+  function tick() {
+    const now = new Date();
+    const state = getState(now, DATES.registerOpen, DATES.registerClose);
+    if (state === 'pending') {
+      value.textContent = formatRemaining(DATES.registerOpen.getTime() - now.getTime());
+      suffix.textContent = 'until 報名開放';
+    } else if (state === 'open') {
+      value.textContent = formatRemaining(DATES.registerClose.getTime() - now.getTime());
+      suffix.textContent = 'until 報名截止';
+    } else {
+      value.textContent = '00d 00h 00m 00s';
+      root.classList.add('closed');
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>

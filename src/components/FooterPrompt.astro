@@ -1,0 +1,114 @@
+---
+import { SITE } from '@/lib/config';
+---
+<footer class="site-footer container">
+  <div class="prompt" id="footer-prompt">
+    <div class="output mono" id="prompt-output" aria-live="polite"></div>
+    <div class="input-line mono">
+      <span class="ps1">ntucpc@2026:~$</span>
+      <input
+        id="prompt-input"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="hidden command prompt"
+      />
+      <span class="caret">▌</span>
+    </div>
+    <div class="hint mono">// try `help` for hidden commands</div>
+  </div>
+  <div class="meta mono">
+    © 2026 NTUCPC · <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: 64px; }
+  .prompt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .output {
+    min-height: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    color: var(--fg-dim);
+    white-space: pre-wrap;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+  }
+  .output:empty { margin-bottom: 0; }
+  .input-line { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+  .ps1 { color: var(--accent); }
+  input {
+    flex: 1; background: transparent; border: 0; outline: 0;
+    color: var(--fg); font: inherit; padding: 0;
+  }
+  .caret { color: var(--accent); animation: blink 1.2s steps(1,end) infinite; }
+  .hint { color: var(--fg-mute); font-size: 0.75rem; margin-top: 8px; }
+  .meta {
+    color: var(--fg-dim); font-size: 0.8rem; text-align: center;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .caret { animation: none; }
+  }
+</style>
+
+<script>
+  import { run } from '@/lib/commands';
+
+  const input = document.getElementById('prompt-input') as HTMLInputElement;
+  const output = document.getElementById('prompt-output')!;
+  const history: string[] = [];
+  let cursor = -1;
+
+  function append(line: string) {
+    const div = document.createElement('div');
+    div.textContent = line;
+    output.appendChild(div);
+    while (output.childElementCount > 40) output.firstChild?.remove();
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function execute(cmd: string) {
+    if (!cmd.trim()) return;
+    append(`ntucpc@2026:~$ ${cmd}`);
+    history.push(cmd);
+    cursor = history.length;
+    const r = run(cmd);
+    if (r.action === 'clear') { output.innerHTML = ''; return; }
+    if (r.action === 'exit') { input.blur(); return; }
+    r.lines.forEach(append);
+    if (r.action?.startsWith('launch:')) {
+      const game = r.action.split(':')[1];
+      window.dispatchEvent(new CustomEvent(`ntucpcpc:launch-${game}`));
+    } else if (r.action?.startsWith('scroll:')) {
+      const id = r.action.split(':')[1];
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else if (r.action?.startsWith('external:')) {
+      window.open(r.action.slice('external:'.length), '_blank');
+    }
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      execute(input.value);
+      input.value = '';
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (cursor > 0) cursor -= 1;
+      input.value = history[cursor] ?? '';
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (cursor < history.length - 1) { cursor += 1; input.value = history[cursor]; }
+      else { cursor = history.length; input.value = ''; }
+    }
+  });
+</script>

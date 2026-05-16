@@ -1,0 +1,61 @@
+---
+const rows = [
+  { stage: '報名', date: '2026/05/18 – 07/12', tag: '' },
+  { stage: '測試賽', date: '2026/07/23 – 07/25', tag: '' },
+  { stage: '初賽', date: '2026/07/26 13:00 – 17:00', tag: 'online' },
+  { stage: '決賽', date: '2026/08/02', tag: '台大校總區' },
+];
+const finalDay: [string, string][] = [
+  ['10:00–12:00', '報到 / 系統測試（報到完即可進場測試）'],
+  ['12:40–13:00', '比賽進場'],
+  ['13:00–18:00', '比賽（5 小時）'],
+  ['18:00–19:00', '頒獎與題目講解'],
+];
+---
+<section id="schedule" class="container">
+  <div class="eyebrow">// 重要日期</div>
+  <h2>## 競賽日程</h2>
+  <div class="card">
+    <table>
+      <thead>
+        <tr><th>階段</th><th>日期</th><th></th></tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr>
+            <td class="stage">{r.stage}</td>
+            <td class="date mono">{r.date}</td>
+            <td class="tag mono">{r.tag}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <details class="final-day">
+    <summary>展開決賽當日流程</summary>
+    <ul>
+      {finalDay.map(([t, what]) => (
+        <li><span class="t mono">{t}</span><span>{what}</span></li>
+      ))}
+    </ul>
+    <p class="note mono">// 決賽不提供午餐，比賽中會提供點心</p>
+  </details>
+</section>
+
+<style>
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--border-soft); }
+  th { color: var(--fg-dim); font-family: var(--font-mono); font-weight: 500; font-size: 0.875rem; }
+  .stage { font-weight: 600; }
+  .date { color: var(--fg); }
+  .tag { color: var(--accent); font-size: 0.85rem; }
+  tr:last-child td { border-bottom: 0; }
+
+  .final-day { margin-top: 16px; }
+  .final-day summary { cursor: pointer; color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem; }
+  .final-day summary:hover { color: var(--accent); }
+  .final-day ul { list-style: none; padding: 16px 0 0; margin: 0; display: grid; gap: 8px; }
+  .final-day li { display: flex; gap: 16px; }
+  .final-day .t { color: var(--accent); min-width: 120px; }
+  .final-day .note { color: var(--fg-dim); margin-top: 12px; }
+</style>

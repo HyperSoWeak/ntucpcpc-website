@@ -1,4 +1,4 @@
-import { Board, Piece, shapeMatrix, colorOf, ROWS, COLS } from './tetris';
+import { type Board, type Piece, shapeMatrix, colorOf, ROWS, COLS } from './tetris';
 
 const COLORS = ['transparent', '--tetris-1','--tetris-2','--tetris-3','--tetris-4','--tetris-5','--tetris-6','--tetris-7'];
 

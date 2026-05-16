@@ -1,5 +1,5 @@
 import {
-  Board, Piece, createBoard, randomBag, spawnPiece,
+  type Board, type Piece, createBoard, randomBag, spawnPiece,
   collides, merge, clearFullRows, scoreForLines, levelFor, dropIntervalMs,
 } from './tetris';
 import { TetrisRenderer } from './tetris-render';

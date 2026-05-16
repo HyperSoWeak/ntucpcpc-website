@@ -1,0 +1,56 @@
+---
+---
+<div id="boot" class="boot mono" aria-hidden="true">
+  <div class="lines" id="boot-lines"></div>
+</div>
+
+<style>
+  .boot {
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--bg);
+    display: grid; place-items: center;
+    color: var(--accent);
+    font-size: 0.95rem;
+    transition: opacity 300ms ease;
+  }
+  .boot.hide { opacity: 0; pointer-events: none; }
+  .lines { width: min(600px, 90vw); }
+  .lines div { white-space: pre; }
+  .lines .ok { color: var(--accent); }
+  .lines .dim { color: var(--fg-dim); }
+</style>
+
+<script>
+  const root = document.getElementById('boot')!;
+  const linesEl = document.getElementById('boot-lines')!;
+
+  if (sessionStorage.getItem('boot') === '1' ||
+      matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    root.remove();
+  } else {
+    const sequence: [string, string][] = [
+      ['dim', '$ g++ ntucpcpc.cpp -o site -O2 -std=c++20'],
+      ['dim', '$ ./site --year 2026'],
+      ['ok',  'Compilation finished.'],
+      ['ok',  'Verdict: Accepted (0.04s, 12 MB)'],
+    ];
+    let i = 0;
+    function next() {
+      if (i >= sequence.length) {
+        setTimeout(() => {
+          root.classList.add('hide');
+          setTimeout(() => root.remove(), 300);
+          sessionStorage.setItem('boot', '1');
+        }, 250);
+        return;
+      }
+      const [cls, text] = sequence[i++];
+      const div = document.createElement('div');
+      div.className = cls;
+      div.textContent = text;
+      linesEl.appendChild(div);
+      setTimeout(next, 150);
+    }
+    next();
+  }
+</script>

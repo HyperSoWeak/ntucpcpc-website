@@ -39,5 +39,24 @@ const { title = SITE.title, description = SITE.description } = Astro.props;
   <body>
     <slot />
     <!-- end of body. if you're still reading, /join us :) -->
+    <script>
+      import { installConsoleBanner } from '@/lib/console-banner';
+      import { installTabTitle } from '@/lib/tab-title';
+      import { attachKonami } from '@/lib/konami';
+      import { showMatrixRain } from '@/lib/matrix-rain';
+
+      installConsoleBanner();
+      installTabTitle();
+      attachKonami((count) => {
+        if (count === 1) {
+          showMatrixRain();
+        } else {
+          const picks = ['matrix', 'tetris', 'rhythm'];
+          const pick = picks[Math.floor(Math.random() * picks.length)];
+          if (pick === 'matrix') showMatrixRain();
+          else window.dispatchEvent(new CustomEvent(`ntucpcpc:launch-${pick}`));
+        }
+      });
+    </script>
   </body>
 </html>

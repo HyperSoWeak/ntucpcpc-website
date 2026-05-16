@@ -1,0 +1,17 @@
+---
+import { SITE } from '@/lib/config';
+---
+<section id="contact" class="container">
+  <div class="eyebrow">// 找我們</div>
+  <h2>## 聯絡我們</h2>
+  <div class="card contact">
+    <div class="line"><span class="key mono">email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></div>
+    <div class="line"><span class="key mono">web</span><a href={SITE.clubUrl} target="_blank" rel="noopener">{SITE.clubUrl}</a></div>
+  </div>
+</section>
+
+<style>
+  .contact { display: grid; gap: 12px; }
+  .line { display: flex; gap: 16px; align-items: baseline; }
+  .key { color: var(--accent); min-width: 60px; font-size: 0.875rem; }
+</style>

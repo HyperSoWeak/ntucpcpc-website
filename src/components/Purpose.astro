@@ -1,0 +1,15 @@
+---
+import purpose from '@/data/purpose.md?raw';
+const paragraphs = purpose.trim().split(/\n\n+/);
+---
+<section id="purpose" class="container">
+  <div class="eyebrow">// 為什麼舉辦這場比賽？</div>
+  <h2>## 宗旨</h2>
+  <div class="prose">
+    {paragraphs.map((p) => <p>{p}</p>)}
+  </div>
+</section>
+
+<style>
+  .prose p { max-width: 65ch; color: var(--fg); }
+</style>

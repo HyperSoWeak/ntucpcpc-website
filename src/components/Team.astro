@@ -1,0 +1,20 @@
+---
+import team from '@/data/team.md?raw';
+const items = team.trim().split('\n').filter((l) => l.startsWith('- ')).map((l) => l.slice(2));
+---
+<section id="team" class="container">
+  <div class="eyebrow">// 工作人員</div>
+  <h2>## 籌備團隊</h2>
+  <div class="card">
+    <ul>
+      {items.map((i) => (
+        <li set:html={i.replace(/：/, '<span class="sep">: </span>')} />
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .sep { color: var(--accent); font-family: var(--font-mono); }
+</style>

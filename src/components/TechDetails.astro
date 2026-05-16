@@ -1,0 +1,20 @@
+---
+import tech from '@/data/tech.md?raw';
+const items = tech.trim().split('\n').filter((l) => l.startsWith('- ')).map((l) => l.slice(2));
+---
+<section id="tech" class="container">
+  <div class="eyebrow">// 平台與工具</div>
+  <h2>## 技術細節</h2>
+  <div class="card">
+    <ul>
+      {items.map((i) => (
+        <li class="mono"><span class="dim">$</span> {i}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .dim { color: var(--accent); margin-right: 8px; }
+</style>

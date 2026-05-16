@@ -1,0 +1,90 @@
+---
+const items = [
+  { id: 'schedule', label: '日程' },
+  { id: 'register', label: '報名' },
+  { id: 'rules',    label: '規則' },
+  { id: 'contact',  label: '聯絡' },
+];
+---
+<nav class="site-nav">
+  <div class="inner container">
+    <button id="nav-logo" class="logo mono" aria-label="NTUCPC home">
+      <span class="user">ntucpc</span><span class="dim">@2026:~$</span>
+    </button>
+    <button class="hamburger mono" id="nav-toggle" aria-label="menu">≡</button>
+    <ul id="nav-menu">
+      {items.map((it) => (
+        <li><a href={`#${it.id}`}>#{it.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .site-nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(11,16,24,0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .inner { display: flex; align-items: center; justify-content: space-between; padding-block: 14px; }
+  .logo {
+    background: transparent; border: 0; padding: 0; cursor: pointer;
+    font: inherit; color: inherit;
+  }
+  .logo .user { color: var(--accent); }
+  .logo .dim { color: var(--fg-dim); }
+  ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
+  ul a { color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem; }
+  ul a:hover { color: var(--accent); text-decoration: none; }
+  .hamburger { display: none; background: transparent; border: 0; color: var(--fg); font-size: 1.5rem; cursor: pointer; }
+
+  @media (max-width: 640px) {
+    .hamburger { display: block; }
+    .site-nav { position: relative; }
+    ul { display: none; position: absolute; top: 100%; right: 0; left: 0;
+         flex-direction: column; background: var(--surface); padding: 16px; border-bottom: 1px solid var(--border); }
+    ul.open { display: flex; }
+  }
+
+  .logo.pulse { animation: pulse 0.6s ease; }
+  @keyframes pulse {
+    0% { text-shadow: 0 0 0 var(--accent); }
+    50% { text-shadow: 0 0 16px var(--accent); }
+    100% { text-shadow: 0 0 0 var(--accent); }
+  }
+</style>
+
+<script>
+  const logo = document.getElementById('nav-logo')!;
+  const toggle = document.getElementById('nav-toggle')!;
+  const menu = document.getElementById('nav-menu')!;
+  let clicks = 0;
+
+  const POEMS = [
+    'while (! sleep) { 寫 code; debug; 寫 code; debug; }',
+    '0xBADC0DE: don’t stare too long.',
+    'segmentation fault — kidding, you’re fine.',
+    'O(1) interest in your life — except this competition.',
+  ];
+
+  logo.addEventListener('click', () => {
+    clicks += 1;
+    logo.classList.remove('pulse');
+    void (logo as HTMLElement).offsetWidth;
+    logo.classList.add('pulse');
+    if (clicks === 5) {
+      console.log('%c+5 click streak. nice.', 'color:#34d399');
+    } else if (clicks === 10) {
+      const poem = POEMS[Math.floor(Math.random() * POEMS.length)];
+      console.log(`%c${poem}`, 'color:#fbbf24;font-family:ui-monospace,monospace');
+    } else if (clicks === 20) {
+      import('@/lib/commands').then(({ register }) => {
+        register('sandwich', () => ({ lines: ['What? Make it yourself.', '— xkcd 149'] }));
+        console.log('%cunlocked: sudo make me a sandwich', 'color:#34d399');
+      });
+    }
+  });
+
+  toggle.addEventListener('click', () => menu.classList.toggle('open'));
+</script>
