@@ -1,0 +1,127 @@
+---
+---
+<div id="rhythm-overlay" class="overlay" hidden>
+  <div class="frame">
+    <header>
+      <span class="title">$ rhythm — NTUCPCPC theme</span>
+      <span class="hint">press [esc] to exit · D F J K to hit</span>
+    </header>
+    <div class="hud mono">
+      <span>SCORE <span id="rhythm-score">0</span></span>
+      <span>COMBO x<span id="rhythm-combo">0</span></span>
+      <span id="rhythm-judge"></span>
+    </div>
+    <canvas id="rhythm-canvas" width="480" height="600"></canvas>
+    <div id="rhythm-mobile" class="mobile-note" hidden>
+      rhythm game requires a desktop keyboard.
+    </div>
+    <div id="rhythm-result" class="result" hidden>
+      <div class="grade mono" id="rhythm-grade">S</div>
+      <div class="msg mono" id="rhythm-msg"></div>
+      <button class="btn btn-primary" id="rhythm-close">close</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(11, 16, 24, 0.92);
+    display: grid; place-items: center;
+    backdrop-filter: blur(4px);
+  }
+  .frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    max-width: 540px; width: calc(100vw - 32px);
+    position: relative;
+  }
+  header {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); color: var(--fg-dim); font-size: 0.875rem;
+    margin-bottom: 12px;
+  }
+  header .title { color: var(--accent); }
+  .hud {
+    display: flex; gap: 24px; justify-content: center;
+    color: var(--fg-dim); margin-bottom: 12px;
+  }
+  .hud span span { color: var(--accent); }
+  canvas { display: block; background: var(--surface-2); border-radius: var(--radius-sm); margin-inline: auto; max-width: 100%; height: auto; }
+  .mobile-note {
+    padding: 60px 20px; text-align: center;
+    font-family: var(--font-mono); color: var(--fg-dim);
+  }
+  .result {
+    position: absolute; inset: 0; background: rgba(11,16,24,0.95);
+    display: grid; place-items: center; border-radius: var(--radius-lg);
+    text-align: center;
+  }
+  .grade { font-size: 5rem; color: var(--accent); }
+  .msg { color: var(--fg-dim); margin-bottom: 20px; }
+</style>
+
+<script>
+  import { startRhythm } from '@/lib/rhythm-controller';
+
+  const overlay = document.getElementById('rhythm-overlay')!;
+  const canvas = document.getElementById('rhythm-canvas') as HTMLCanvasElement;
+  const scoreEl = document.getElementById('rhythm-score')!;
+  const comboEl = document.getElementById('rhythm-combo')!;
+  const judgeEl = document.getElementById('rhythm-judge')!;
+  const resultEl = document.getElementById('rhythm-result')!;
+  const gradeEl = document.getElementById('rhythm-grade')!;
+  const msgEl = document.getElementById('rhythm-msg')!;
+  const closeBtn = document.getElementById('rhythm-close')!;
+  const mobileEl = document.getElementById('rhythm-mobile')!;
+
+  let game: ReturnType<typeof startRhythm> | null = null;
+
+  function isMobile() {
+    return matchMedia('(pointer: coarse) and (max-width: 768px)').matches;
+  }
+
+  function open() {
+    overlay.removeAttribute('hidden');
+    resultEl.setAttribute('hidden', '');
+    if (isMobile()) {
+      mobileEl.removeAttribute('hidden');
+      return;
+    }
+    mobileEl.setAttribute('hidden', '');
+    game = startRhythm({
+      canvas,
+      onUpdate: ({ score, combo, lastJudge }) => {
+        scoreEl.textContent = String(score);
+        comboEl.textContent = String(combo);
+        if (lastJudge) judgeEl.textContent = lastJudge.toUpperCase();
+      },
+      onEnd: ({ score, percent, grade }) => {
+        gradeEl.textContent = grade;
+        msgEl.textContent = `${score} pts · ${percent.toFixed(1)}%`;
+        resultEl.removeAttribute('hidden');
+      },
+    });
+    game.start();
+  }
+
+  function close() {
+    overlay.setAttribute('hidden', '');
+    game?.stop();
+    game = null;
+    if (location.hash === '#rhythm') history.replaceState(null, '', location.pathname);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) close();
+  });
+  closeBtn.addEventListener('click', close);
+
+  window.addEventListener('ntucpcpc:launch-rhythm', open);
+  if (location.hash === '#rhythm') open();
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#rhythm') open();
+  });
+</script>
