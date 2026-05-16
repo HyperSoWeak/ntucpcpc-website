@@ -17,13 +17,30 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, #34d39908, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, #34d39912, transparent 60%),
+    radial-gradient(circle at 1px 1px, #1f293760 1px, transparent 0) 0 0 / 32px 32px,
     var(--bg);
+  counter-reset: section 0;
 }
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--fg-mute); }
 
 a {
   color: var(--link);
   text-decoration: none;
+  transition: 150ms ease;
 }
 a:hover { text-decoration: underline; }
 a:focus-visible {
@@ -34,12 +51,12 @@ a:focus-visible {
 
 h1, h2, h3, h4 {
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.2;
   margin: 0 0 0.5em;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 h1 { font-size: 2.75rem; }
-h2 { font-size: 2rem; }
+h2 { font-size: 2.25rem; }
 h3 { font-size: 1.5rem; }
 
 p { margin: 0 0 1em; }
@@ -56,17 +73,32 @@ code, kbd, .mono {
 }
 
 section {
-  padding-block: 96px;
-  border-top: 1px solid var(--border-soft);
+  padding-block: 120px;
+  position: relative;
+  counter-increment: section;
 }
-section:first-of-type { border-top: 0; }
+section + section { border-top: 1px solid var(--border-soft); }
+#hero { counter-increment: none; }
 
 .eyebrow {
   font-family: var(--font-mono);
   color: var(--fg-dim);
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: counter(section, decimal-leading-zero);
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 1px 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
 }
 
 .card {
@@ -89,7 +121,7 @@ section:first-of-type { border-top: 0; }
   font: inherit;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: 150ms ease;
+  transition: 180ms ease;
   text-decoration: none;
 }
 .btn:hover {
@@ -115,7 +147,7 @@ section:first-of-type { border-top: 0; }
 }
 
 @media (max-width: 768px) {
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
-  section { padding-block: 64px; }
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.625rem; }
+  section { padding-block: 80px; }
 }

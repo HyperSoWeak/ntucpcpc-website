@@ -3,30 +3,63 @@ import { SITE } from '@/lib/config';
 import Countdown from './Countdown.astro';
 ---
 <section id="hero" class="hero container">
-  <div class="eyebrow">$ ./ntucpcpc --year 2026</div>
+  <div class="prompt mono">
+    <span class="ps1">$</span>
+    <span class="cmd">./ntucpcpc --year 2026</span>
+  </div>
+
   <h1 class="title">NTUCPCPC</h1>
-  <p class="subtitle">程式解題社程式解題競賽 · 2026</p>
+  <div class="rule" aria-hidden="true">━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+  <p class="subtitle mono"># 程式解題社程式解題競賽 · 2026</p>
+
   <div class="cta">
-    <a class="btn btn-primary cta-register" href={SITE.registerUrl} target="_blank" rel="noopener" data-original="[ register ]">
+    <a class="btn btn-primary cta-register" href={SITE.registerUrl} target="_blank" rel="noopener">
       <span class="label">[ register ]</span>
     </a>
-    <a class="btn" href="#rules">[ docs ]</a>
+    <a class="btn" href="#rules"><span>$ man rules</span></a>
   </div>
+
   <Countdown />
 </section>
 
 <style>
-  .hero { padding-block: 120px 80px; text-align: left; border-top: 0; }
-  .title {
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    letter-spacing: -0.02em;
-    background: linear-gradient(180deg, var(--fg), var(--fg-dim));
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
+  .hero { padding-block: 120px 80px; }
+
+  .prompt {
+    color: var(--fg-dim);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+    display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
   }
-  .subtitle { color: var(--fg-dim); font-family: var(--font-mono); margin-bottom: 28px; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .prompt .ps1 { color: var(--accent); }
+  .prompt .cmd { color: var(--fg); }
+
+  .title {
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    letter-spacing: -0.035em;
+    line-height: 1;
+    margin: 0 0 12px;
+    font-weight: 700;
+    color: var(--fg);
+  }
+
+  .rule {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    letter-spacing: -0.1em;
+    line-height: 1;
+    margin-bottom: 16px;
+    overflow: hidden;
+    max-width: 26ch;
+  }
+
+  .subtitle {
+    color: var(--fg-dim);
+    margin-bottom: 32px;
+    font-size: 0.95rem;
+  }
+
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
   .cta .btn { font-family: var(--font-mono); }
 </style>
 
