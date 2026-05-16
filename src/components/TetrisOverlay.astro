@@ -1,0 +1,149 @@
+---
+---
+<div id="tetris-overlay" class="overlay" hidden>
+  <div class="frame">
+    <header>
+      <span class="title">$ tetris</span>
+      <span class="hint">press [esc] to exit · [p] pause</span>
+    </header>
+    <div class="body">
+      <canvas id="tetris-canvas" width="300" height="600"></canvas>
+      <aside>
+        <div class="panel">
+          <div class="label">NEXT</div>
+          <canvas id="tetris-next" width="80" height="80"></canvas>
+        </div>
+        <div class="panel">
+          <div class="label">SCORE</div>
+          <div class="value mono" id="tetris-score">0</div>
+        </div>
+        <div class="panel">
+          <div class="label">LINES</div>
+          <div class="value mono" id="tetris-lines">0</div>
+        </div>
+        <div class="panel">
+          <div class="label">LEVEL</div>
+          <div class="value mono" id="tetris-level">1</div>
+        </div>
+        <div class="panel">
+          <div class="label">BEST</div>
+          <div class="value mono" id="tetris-best">0</div>
+        </div>
+        <div class="keys mono">
+          ← → move<br/>
+          ↓ soft drop<br/>
+          ↑ rotate<br/>
+          space hard drop<br/>
+          p pause
+        </div>
+      </aside>
+    </div>
+    <div id="tetris-gameover" class="gameover" hidden>
+      <div class="verdict">Verdict: TLE</div>
+      <div class="msg">exceeded time limit. final score: <span id="tetris-final">0</span></div>
+      <button class="btn btn-primary" id="tetris-restart">restart</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(11, 16, 24, 0.92);
+    display: grid; place-items: center;
+    backdrop-filter: blur(4px);
+  }
+  .frame {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    max-width: 560px; width: calc(100vw - 32px);
+    position: relative;
+  }
+  header {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); color: var(--fg-dim); font-size: 0.875rem;
+    margin-bottom: 16px;
+  }
+  header .title { color: var(--accent); }
+  .body { display: flex; gap: 20px; }
+  canvas#tetris-canvas { background: var(--surface-2); border-radius: var(--radius-sm); }
+  aside { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .panel { background: var(--surface-2); padding: 10px; border-radius: var(--radius-sm); }
+  .label { font-size: 0.75rem; color: var(--fg-dim); font-family: var(--font-mono); }
+  .value { font-size: 1.5rem; color: var(--accent); }
+  .keys { font-size: 0.75rem; color: var(--fg-dim); line-height: 1.8; margin-top: auto; }
+  canvas#tetris-next { background: var(--surface); border-radius: var(--radius-sm); }
+  .gameover {
+    position: absolute; inset: 0;
+    background: rgba(11, 16, 24, 0.9);
+    display: grid; place-items: center; text-align: center;
+    border-radius: var(--radius-lg);
+  }
+  .verdict { color: var(--warn); font-family: var(--font-mono); font-size: 2rem; margin-bottom: 8px; }
+  .msg { color: var(--fg-dim); font-family: var(--font-mono); margin-bottom: 20px; }
+  @media (max-width: 640px) {
+    .body { flex-direction: column; align-items: center; }
+    aside { flex-direction: row; flex-wrap: wrap; width: 100%; }
+    .panel { flex: 1 1 30%; }
+    canvas#tetris-canvas { width: 100%; height: auto; max-width: 280px; }
+  }
+</style>
+
+<script>
+  import { startTetris } from '@/lib/tetris-controller';
+
+  const overlay = document.getElementById('tetris-overlay')!;
+  const canvas = document.getElementById('tetris-canvas') as HTMLCanvasElement;
+  const nextCanvas = document.getElementById('tetris-next') as HTMLCanvasElement;
+  const scoreEl = document.getElementById('tetris-score')!;
+  const linesEl = document.getElementById('tetris-lines')!;
+  const levelEl = document.getElementById('tetris-level')!;
+  const bestEl = document.getElementById('tetris-best')!;
+  const gameOverEl = document.getElementById('tetris-gameover')!;
+  const finalEl = document.getElementById('tetris-final')!;
+  const restartBtn = document.getElementById('tetris-restart')!;
+
+  let game: ReturnType<typeof startTetris> | null = null;
+
+  function open() {
+    overlay.removeAttribute('hidden');
+    gameOverEl.setAttribute('hidden', '');
+    game = startTetris({
+      canvas, nextCanvas,
+      onScore: ({ score, lines, level, best }) => {
+        scoreEl.textContent = String(score);
+        linesEl.textContent = String(lines);
+        levelEl.textContent = String(level);
+        bestEl.textContent = String(best);
+      },
+      onGameOver: ({ score }) => {
+        finalEl.textContent = String(score);
+        gameOverEl.removeAttribute('hidden');
+      },
+    });
+    game.start();
+  }
+
+  function close() {
+    overlay.setAttribute('hidden', '');
+    game?.stop();
+    game = null;
+    if (location.hash === '#tetris') history.replaceState(null, '', location.pathname);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) close();
+  });
+  restartBtn.addEventListener('click', () => {
+    gameOverEl.setAttribute('hidden', '');
+    game?.restart();
+  });
+
+  window.addEventListener('ntucpcpc:launch-tetris', open);
+  if (location.hash === '#tetris') open();
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#tetris') open();
+  });
+</script>
