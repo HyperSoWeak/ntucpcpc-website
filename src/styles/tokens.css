@@ -1,0 +1,46 @@
+:root {
+  /* Surface */
+  --bg:           #0b1018;
+  --surface:      #141b26;
+  --surface-2:    #1c2433;
+  --border:       #1f2937;
+  --border-soft:  #1f293780;
+
+  /* Text */
+  --fg:           #e5edf5;
+  --fg-dim:       #8b97a8;
+  --fg-mute:      #525d6e;
+
+  /* Accent */
+  --accent:       #34d399;
+  --accent-soft:  #34d39920;
+  --link:         #7dd3fc;
+  --warn:         #fbbf24;
+  --error:        #f87171;
+
+  /* Radius / Shadow */
+  --radius-sm:    6px;
+  --radius-md:    10px;
+  --radius-lg:    16px;
+  --shadow-card:  0 1px 0 #ffffff08 inset, 0 8px 24px #00000040;
+
+  /* Tetris */
+  --tetris-1:     #34d399;
+  --tetris-2:     #7dd3fc;
+  --tetris-3:     #fbbf24;
+  --tetris-4:     #fb7185;
+  --tetris-5:     #a78bfa;
+  --tetris-6:     #a3e635;
+  --tetris-7:     #22d3ee;
+
+  /* Fonts */
+  --font-sans:
+    'Inter', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei',
+    system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:
+    'JetBrains Mono', 'Cascadia Code', 'Sarasa Mono TC',
+    ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Layout */
+  --content-max: 960px;
+}

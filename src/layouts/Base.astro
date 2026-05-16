@@ -1,0 +1,43 @@
+---
+import '@/styles/tokens.css';
+import '@/styles/global.css';
+import { SITE } from '@/lib/config';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = SITE.title, description = SITE.description } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <!--
+      ╔════════════════════════════════════════════════════════════╗
+      ║                                                            ║
+      ║   you're reading the source. nice.                         ║
+      ║                                                            ║
+      ║   臺大程式解題社徵社員、徵工程師、徵贊助商。               ║
+      ║   寫信來：ntucpc@csie.ntu.edu.tw                           ║
+      ║                                                            ║
+      ║   hint: try `help` in the prompt at the bottom of the      ║
+      ║   page, or open the JS console.                            ║
+      ║                                                            ║
+      ║   "premature optimization is the root of all evil"         ║
+      ║                                  — donald knuth            ║
+      ║                                                            ║
+      ╚════════════════════════════════════════════════════════════╝
+    -->
+  </head>
+  <body>
+    <slot />
+    <!-- end of body. if you're still reading, /join us :) -->
+  </body>
+</html>
