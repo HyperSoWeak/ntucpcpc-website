@@ -13,10 +13,10 @@ import Countdown from './Countdown.astro';
   <p class="subtitle mono"># 程式解題社程式解題競賽 · 2026</p>
 
   <div class="cta">
-    <a class="btn btn-primary cta-register" href={SITE.registerUrl} target="_blank" rel="noopener">
-      <span class="label">[ register ]</span>
+    <a class="btn btn-primary big" href={SITE.registerUrl} target="_blank" rel="noopener">
+      立即報名 →
     </a>
-    <a class="btn" href="#rules"><span>$ man rules</span></a>
+    <a class="btn big" href="#rules">查看規則</a>
   </div>
 
   <Countdown />
@@ -63,62 +63,15 @@ import Countdown from './Countdown.astro';
     font-size: 0.95rem;
   }
 
-  .cta { display: flex; gap: 12px; flex-wrap: nowrap; margin-bottom: 8px; max-width: 100%; }
-  .cta .btn { font-family: var(--font-mono); white-space: nowrap; }
-  /* keep button width stable so the hover boundary never shifts past the cursor */
-  .cta-register {
-    min-width: 12ch;
-    justify-content: flex-start;
-    overflow: hidden;
-  }
-  .cta-register .label {
-    display: inline-block;
-    white-space: nowrap;
-  }
+  .cta { display: flex; gap: 12px; flex-wrap: nowrap; margin-bottom: 8px; }
+  .cta .btn { white-space: nowrap; }
   @media (max-width: 480px) {
     .cta { flex-wrap: wrap; }
   }
 </style>
 
 <script>
-  import { SITE } from '@/lib/config';
-
   document.getElementById('hero-prompt')!.addEventListener('click', () => {
     window.dispatchEvent(new CustomEvent('ntucpcpc:launch-terminal'));
   });
-
-  const btn = document.querySelector('.cta-register .label') as HTMLElement;
-  if (btn) {
-    const original = btn.textContent ?? '[ register ]';
-    let hoverHost = SITE.registerUrl;
-    try { hoverHost = new URL(SITE.registerUrl).hostname; } catch {}
-    const hover = `$ xdg-open ${hoverHost}`;
-    let typing: number | null = null;
-    let state: 'idle' | 'hover' = 'idle';
-    function type(target: string) {
-      if (typing !== null) { clearInterval(typing); typing = null; }
-      let i = 0;
-      btn.textContent = '';
-      typing = window.setInterval(() => {
-        i += 1;
-        btn.textContent = target.slice(0, i);
-        if (i >= target.length) { clearInterval(typing!); typing = null; }
-      }, 12);
-    }
-    const a = btn.closest('a')!;
-    function enter() {
-      if (state === 'hover') return;
-      state = 'hover';
-      type(hover);
-    }
-    function leave() {
-      if (state === 'idle') return;
-      state = 'idle';
-      type(original);
-    }
-    a.addEventListener('mouseenter', enter);
-    a.addEventListener('mouseleave', leave);
-    a.addEventListener('focus', enter);
-    a.addEventListener('blur', leave);
-  }
 </script>

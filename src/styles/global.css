@@ -130,6 +130,12 @@ section + section { border-top: 1px solid var(--border-soft); }
   background: var(--accent);
   color: var(--bg);
 }
+.btn.big {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
