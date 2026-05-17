@@ -24,6 +24,7 @@ export function startRhythm(opts: Options) {
   const LANE_KEYS: Record<string, 0 | 1 | 2 | 3> = {
     d: 0, f: 1, j: 2, k: 3,
   };
+  const pressedLanes = new Set<number>();
 
   function update(j: Judgment) {
     score += scoreFor(j);
@@ -36,10 +37,16 @@ export function startRhythm(opts: Options) {
     opts.onUpdate({ score, combo, lastJudge: j, perfect, great, good, miss });
   }
 
+  function onKeyUp(e: KeyboardEvent) {
+    const lane = LANE_KEYS[e.key.toLowerCase()];
+    if (lane !== undefined) pressedLanes.delete(lane);
+  }
+
   function onKey(e: KeyboardEvent) {
     if (ended) return;
     const lane = LANE_KEYS[e.key.toLowerCase()];
     if (lane === undefined) return;
+    pressedLanes.add(lane);
     e.preventDefault();
     const now = audio.elapsed();
     let bestI = -1, bestDt = Infinity;
@@ -51,7 +58,7 @@ export function startRhythm(opts: Options) {
       if (dt < bestDt) { bestDt = dt; bestI = i; }
       if (n.time - now > 200) break;
     }
-    if (bestI >= 0 && bestDt <= 100) {
+    if (bestI >= 0 && bestDt <= 85) {
       const j = judge(CHART[bestI].time - now);
       hits.set(bestI, j);
       try { hitSound(); } catch {}
@@ -63,9 +70,9 @@ export function startRhythm(opts: Options) {
     const t = audio.elapsed();
     for (let i = 0; i < CHART.length; i++) {
       if (hits.has(i)) continue;
-      if (t - CHART[i].time > 100) { hits.set(i, 'miss'); update('miss'); }
+      if (t - CHART[i].time > 85) { hits.set(i, 'miss'); update('miss'); }
     }
-    renderer.draw(t, hits);
+    renderer.draw(t, hits, pressedLanes);
     if (t > SONG_LENGTH_MS + 1500) {
       ended = true;
       window.removeEventListener('keydown', onKey);
@@ -83,6 +90,7 @@ export function startRhythm(opts: Options) {
   function start() {
     audio.start(2000);
     window.addEventListener('keydown', onKey);
+    window.addEventListener('keyup', onKeyUp);
     raf = requestAnimationFrame(frame);
   }
 
@@ -91,6 +99,8 @@ export function startRhythm(opts: Options) {
     cancelAnimationFrame(raf);
     audio.stop();
     window.removeEventListener('keydown', onKey);
+    window.removeEventListener('keyup', onKeyUp);
+    pressedLanes.clear();
   }
 
   return { start, stop };

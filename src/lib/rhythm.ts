@@ -1,7 +1,7 @@
 export type Judgment = 'perfect' | 'great' | 'good' | 'miss';
 export type Grade = 'S' | 'A' | 'B' | 'C';
 
-export const WINDOWS = { perfect: 30, great: 60, good: 100 };
+export const WINDOWS = { perfect: 22, great: 50, good: 85 };
 
 export function judge(deltaMs: number): Judgment {
   const a = Math.abs(deltaMs);
