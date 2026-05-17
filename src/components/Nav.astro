@@ -35,13 +35,22 @@ const items = [
   .logo .user { color: var(--accent); }
   .logo .dim { color: var(--fg-dim); }
   ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
-  ul a { color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem; }
-  ul a:hover { color: var(--accent); text-decoration: none; }
+  ul a {
+    color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem;
+    position: relative; padding-bottom: 3px;
+    transition: color 0.2s;
+  }
+  ul a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1px; background: var(--accent);
+    transition: width 0.25s ease;
+  }
+  ul a:hover, ul a.active { color: var(--fg); text-decoration: none; }
+  ul a:hover::after, ul a.active::after { width: 100%; }
   .hamburger { display: none; background: transparent; border: 0; color: var(--fg); font-size: 1.5rem; cursor: pointer; }
 
   @media (max-width: 640px) {
     .hamburger { display: block; }
-    .site-nav { position: relative; }
     ul { display: none; position: absolute; top: 100%; right: 0; left: 0;
          flex-direction: column; background: var(--surface); padding: 16px; border-bottom: 1px solid var(--border); }
     ul.open { display: flex; }
@@ -88,4 +97,20 @@ const items = [
   });
 
   toggle.addEventListener('click', () => menu.classList.toggle('open'));
+
+  const links = [...menu.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+  const ids = new Set(links.map(a => a.getAttribute('href')!.slice(1)));
+  const setActive = (id: string) => {
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      const hit = entries.find(e => e.isIntersecting);
+      if (hit) setActive(hit.target.id);
+    },
+    { rootMargin: '-40% 0px -55% 0px' }
+  );
+  document.querySelectorAll<HTMLElement>('[id]').forEach(el => {
+    if (ids.has(el.id)) io.observe(el);
+  });
 </script>
