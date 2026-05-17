@@ -9,7 +9,8 @@ const items = [
 <nav class="site-nav">
   <div class="inner container">
     <button id="nav-logo" class="logo mono" aria-label="NTUCPC home">
-      <span class="user">ntucpc</span><span class="dim">@2026:~$</span>
+      <img src="/logo.png" alt="NTUCPC logo" class="logo-img" />
+      <span class="ps1"><span class="user">guest</span><span class="dim">@</span><span class="host">ntucpcpc</span><span class="dim">:~$</span></span>
     </button>
     <button class="hamburger mono" id="nav-toggle" aria-label="menu">≡</button>
     <ul id="nav-menu">
@@ -31,9 +32,13 @@ const items = [
   .logo {
     background: transparent; border: 0; padding: 0; cursor: pointer;
     font: inherit; color: inherit;
+    display: flex; align-items: center; gap: 10px;
   }
+  .logo-img { width: 28px; height: 28px; object-fit: contain; }
+  .logo .ps1  { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; letter-spacing: 0; }
   .logo .user { color: var(--accent); }
-  .logo .dim { color: var(--fg-dim); }
+  .logo .host { color: #60a5fa; }
+  .logo .dim  { color: var(--fg-mute); }
   ul { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; }
   ul a {
     color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem;
