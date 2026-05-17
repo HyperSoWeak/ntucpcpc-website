@@ -3,10 +3,10 @@ import { SITE } from '@/lib/config';
 import Countdown from './Countdown.astro';
 ---
 <section id="hero" class="hero container">
-  <div class="prompt mono">
+  <button class="prompt mono" id="hero-prompt" aria-label="open terminal">
     <span class="ps1">$</span>
     <span class="cmd">./ntucpcpc --year 2026</span>
-  </div>
+  </button>
 
   <h1 class="title">NTUCPCPC</h1>
   <div class="rule" aria-hidden="true">━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
@@ -30,7 +30,11 @@ import Countdown from './Countdown.astro';
     font-size: 0.9rem;
     margin-bottom: 28px;
     display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+    background: transparent; border: 0; padding: 0;
+    cursor: pointer; text-align: left;
+    transition: opacity 150ms ease;
   }
+  .prompt:hover { opacity: 0.75; }
   .prompt .ps1 { color: var(--accent); }
   .prompt .cmd { color: var(--fg); }
 
@@ -78,6 +82,11 @@ import Countdown from './Countdown.astro';
 
 <script>
   import { SITE } from '@/lib/config';
+
+  document.getElementById('hero-prompt')!.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('ntucpcpc:launch-terminal'));
+  });
+
   const btn = document.querySelector('.cta-register .label') as HTMLElement;
   if (btn) {
     const original = btn.textContent ?? '[ register ]';
