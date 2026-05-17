@@ -2,16 +2,15 @@
 import { SITE } from '@/lib/config';
 ---
 
-<!-- Terminal overlay -->
-<div id="terminal-overlay" hidden aria-modal="true" role="dialog" aria-label="hidden terminal">
+<div id="terminal-overlay" hidden aria-modal="true" role="dialog" aria-label="terminal">
   <div class="terminal-box">
     <div class="term-header mono">
-      <span class="ps-label">ntucpc@2026:~</span>
+      <span class="term-title ps1"><span class="u">guest</span><span class="d">@</span><span class="h">ntucpcpc</span><span class="d">:</span><span class="t">~</span></span>
       <button id="terminal-close" aria-label="close terminal">×</button>
     </div>
     <div class="output mono" id="prompt-output" aria-live="polite"></div>
     <div class="input-line mono">
-      <span class="ps1">$</span>
+      <span class="ps1"><span class="u">guest</span><span class="d">@</span><span class="h">ntucpcpc</span><span class="d">:</span><span class="t">~</span><span class="dollar">$</span></span>
       <input
         id="prompt-input"
         type="text"
@@ -19,7 +18,6 @@ import { SITE } from '@/lib/config';
         spellcheck="false"
         aria-label="command input"
       />
-      <span class="caret">▌</span>
     </div>
   </div>
 </div>
@@ -31,79 +29,88 @@ import { SITE } from '@/lib/config';
 </footer>
 
 <style>
-  /* overlay backdrop */
+  /* PS1 color tokens */
+  .ps1 .u      { color: var(--accent); }
+  .ps1 .d      { color: var(--fg-mute); }
+  .ps1 .h      { color: #60a5fa; }
+  .ps1 .t      { color: var(--fg); }
+  .ps1 .dollar { color: var(--fg); }
+
+  /* overlay */
   #terminal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: #0b1018b0;
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(11,16,24,0.75);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
     padding: 24px;
   }
   #terminal-overlay[hidden] { display: none; }
 
   .terminal-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    width: 100%;
-    max-width: 680px;
-    box-shadow: 0 24px 64px #000000a0;
+    background: #0b1018;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    width: 100%; max-width: 680px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.8);
     overflow: hidden;
   }
 
+  /* header */
   .term-header {
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: #111827;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 9px 16px;
+    display: flex; justify-content: space-between; align-items: center;
     font-size: 0.8rem;
-    color: var(--fg-dim);
+    user-select: none;
   }
   #terminal-close {
-    background: transparent;
-    border: 0;
-    color: var(--fg-mute);
-    font-size: 1.2rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0 2px;
+    background: transparent; border: 0;
+    color: var(--fg-mute); font-size: 1rem;
+    cursor: pointer; line-height: 1; padding: 2px 4px;
     transition: color 150ms;
   }
   #terminal-close:hover { color: var(--fg); }
 
+  /* output */
   .output {
-    min-height: 0;
-    max-height: 280px;
+    padding: 14px 18px 0;
+    min-height: 40px;
+    max-height: 340px;
     overflow-y: auto;
-    color: var(--fg-dim);
-    white-space: pre-wrap;
-    font-size: 0.875rem;
-    padding: 16px 18px 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
   }
-  .output:empty { padding: 0; }
 
+  /* output line types (set by JS) */
+  .output :global(.line-banner) { color: var(--fg-mute); margin-bottom: 8px; }
+  .output :global(.line-banner .hi)   { color: var(--accent); }
+  .output :global(.line-banner .hint) { color: var(--fg-dim); }
+
+  .output :global(.line-cmd)           { }
+  .output :global(.line-cmd .cmd-text) { color: var(--fg); }
+
+  .output :global(.line-out)     { color: var(--fg-dim); }
+  .output :global(.line-out.err) { color: #f87171; }
+
+  /* input line */
   .input-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    padding: 12px 18px 16px;
+    display: flex; align-items: center; gap: 0;
+    font-size: 0.85rem;
+    padding: 10px 18px 14px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 10px;
   }
-  .ps1 { color: var(--accent); }
+  .input-line .ps1 { white-space: nowrap; }
   input {
     flex: 1; background: transparent; border: 0; outline: 0;
     color: var(--fg); font: inherit; padding: 0;
+    margin-left: 8px;
+    caret-color: var(--fg);
   }
-  .caret { color: var(--accent); animation: blink 1.2s steps(1,end) infinite; }
 
   @keyframes blink { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { }
 
   /* footer */
   .site-footer { padding-block: 40px; }
@@ -115,17 +122,55 @@ import { SITE } from '@/lib/config';
 <script>
   import { run } from '@/lib/commands';
 
-  const overlay = document.getElementById('terminal-overlay')!;
-  const input   = document.getElementById('prompt-input') as HTMLInputElement;
-  const output  = document.getElementById('prompt-output')!;
+  const overlay  = document.getElementById('terminal-overlay')!;
+  const input    = document.getElementById('prompt-input') as HTMLInputElement;
+  const output   = document.getElementById('prompt-output')!;
   const closeBtn = document.getElementById('terminal-close')!;
   const history: string[] = [];
   let cursor = -1;
+  let welcomed = false;
+
+  const PS1_HTML = `<span class="ps1"><span class="u">guest</span><span class="d">@</span><span class="h">ntucpcpc</span><span class="d">:</span><span class="t">~</span><span class="dollar">$</span></span>`;
+
+  function trim() {
+    while (output.childElementCount > 80) output.firstChild?.remove();
+  }
+
+  function appendCmd(cmd: string) {
+    const div = document.createElement('div');
+    div.className = 'line-cmd';
+    div.innerHTML = PS1_HTML;
+    const span = document.createElement('span');
+    span.className = 'cmd-text';
+    span.textContent = ' ' + cmd;
+    div.appendChild(span);
+    output.appendChild(div);
+    trim();
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function appendOut(text: string) {
+    const div = document.createElement('div');
+    div.className = 'line-out';
+    if (/not found|permission denied|no such/.test(text)) div.classList.add('err');
+    div.textContent = text;
+    output.appendChild(div);
+    trim();
+    output.scrollTop = output.scrollHeight;
+  }
 
   function open() {
     overlay.removeAttribute('hidden');
     input.focus();
+    if (!welcomed) {
+      welcomed = true;
+      const div = document.createElement('div');
+      div.className = 'line-banner';
+      div.innerHTML = `<span class="hi">NTUCPCPC 2026</span> — type <span class="hint">'help'</span> to get started.`;
+      output.appendChild(div);
+    }
   }
+
   function close() {
     overlay.setAttribute('hidden', '');
     input.blur();
@@ -138,23 +183,15 @@ import { SITE } from '@/lib/config';
     if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) close();
   });
 
-  function append(line: string) {
-    const div = document.createElement('div');
-    div.textContent = line;
-    output.appendChild(div);
-    while (output.childElementCount > 60) output.firstChild?.remove();
-    output.scrollTop = output.scrollHeight;
-  }
-
   function execute(cmd: string) {
     if (!cmd.trim()) return;
-    append(`$ ${cmd}`);
+    appendCmd(cmd);
     history.push(cmd);
     cursor = history.length;
     const r = run(cmd);
-    if (r.action === 'clear') { output.innerHTML = ''; return; }
-    if (r.action === 'exit') { close(); return; }
-    r.lines.forEach(append);
+    if (r.action === 'clear') { output.innerHTML = ''; welcomed = false; return; }
+    if (r.action === 'exit')  { close(); return; }
+    r.lines.forEach(appendOut);
     if (r.action?.startsWith('launch:')) {
       const game = r.action.split(':')[1];
       window.dispatchEvent(new CustomEvent(`ntucpcpc:launch-${game}`));
