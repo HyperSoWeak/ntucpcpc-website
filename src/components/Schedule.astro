@@ -1,61 +1,91 @@
 ---
-const rows = [
-  { stage: '報名', date: '2026/05/18 – 07/12', tag: '' },
-  { stage: '測試賽', date: '2026/07/23 – 07/25', tag: '' },
-  { stage: '初賽', date: '2026/07/26 13:00 – 17:00', tag: 'online' },
-  { stage: '決賽', date: '2026/08/02', tag: '台大校總區' },
-];
-const finalDay: [string, string][] = [
-  ['10:00–12:00', '報到 / 系統測試（報到完即可進場測試）'],
-  ['12:40–13:00', '比賽進場'],
-  ['13:00–18:00', '比賽（5 小時）'],
-  ['18:00–19:00', '頒獎與題目講解'],
+const stages = [
+  { stage: '報名',   date: '2026/05/18 – 07/12',        tag: '' },
+  { stage: '測試賽', date: '2026/07/23 – 07/25',         tag: '' },
+  { stage: '初賽',   date: '2026/07/26  13:00 – 17:00',  tag: 'online' },
+  { stage: '決賽',   date: '2026/08/02',                  tag: '台大校總區' },
 ];
 ---
 <section id="schedule" class="container">
-  <div class="eyebrow">// 重要日期</div>
-  <h2>## 競賽日程</h2>
-  <div class="card">
-    <table>
-      <thead>
-        <tr><th>階段</th><th>日期</th><th></th></tr>
-      </thead>
-      <tbody>
-        {rows.map((r) => (
-          <tr>
-            <td class="stage">{r.stage}</td>
-            <td class="date mono">{r.date}</td>
-            <td class="tag mono">{r.tag}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+  <div class="eyebrow">重要日期</div>
+  <h2>競賽日程</h2>
+
+  <div class="timeline">
+    {stages.map((r, i) => (
+      <div class="tl-row">
+        <div class="tl-dot-col">
+          <div class={`tl-dot${i === 0 ? ' first' : ''}`} />
+        </div>
+        <div class="tl-idx mono">{String(i + 1).padStart(2, '0')}</div>
+        <div class="tl-stage">
+          {r.stage}
+          {r.tag && <span class="tl-badge">{r.tag}</span>}
+        </div>
+        <div class="tl-date mono">{r.date}</div>
+      </div>
+    ))}
   </div>
-  <details class="final-day">
-    <summary>展開決賽當日流程</summary>
-    <ul>
-      {finalDay.map(([t, what]) => (
-        <li><span class="t mono">{t}</span><span>{what}</span></li>
-      ))}
-    </ul>
-    <p class="note mono">// 決賽不提供午餐，比賽中會提供點心</p>
-  </details>
 </section>
 
 <style>
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--border-soft); }
-  th { color: var(--fg-dim); font-family: var(--font-mono); font-weight: 500; font-size: 0.875rem; }
-  .stage { font-weight: 600; }
-  .date { color: var(--fg); }
-  .tag { color: var(--accent); font-size: 0.85rem; }
-  tr:last-child td { border-bottom: 0; }
+  .timeline {
+    max-width: 640px;
+    position: relative;
+  }
 
-  .final-day { margin-top: 16px; }
-  .final-day summary { cursor: pointer; color: var(--fg-dim); font-family: var(--font-mono); font-size: 0.9rem; }
-  .final-day summary:hover { color: var(--accent); }
-  .final-day ul { list-style: none; padding: 16px 0 0; margin: 0; display: grid; gap: 8px; }
-  .final-day li { display: flex; gap: 16px; }
-  .final-day .t { color: var(--accent); min-width: 120px; }
-  .final-day .note { color: var(--fg-dim); margin-top: 12px; }
+  /* vertical line through center of dot column */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px; /* center of 18px dot column */
+    top: 28px;
+    bottom: 28px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--border) 75%);
+  }
+
+  .tl-row {
+    display: grid;
+    grid-template-columns: 18px 36px 1fr auto;
+    gap: 0 16px;
+    align-items: center;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .tl-row:last-child { border-bottom: none; }
+
+  /* dot lives in its own 18px column, centered */
+  .tl-dot-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .tl-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--fg-mute);
+    flex-shrink: 0;
+  }
+  .tl-dot.first {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .tl-idx { font-size: 0.7rem; color: var(--fg-mute); }
+  .tl-stage { font-weight: 600; font-size: 0.975rem; display: flex; align-items: center; gap: 8px; }
+  .tl-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .tl-date { font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
 </style>

@@ -23,6 +23,23 @@ body {
   counter-reset: section 0;
 }
 
+/* ghost section number */
+section:not(#hero)::after {
+  content: counter(section, decimal-leading-zero);
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: clamp(7rem, 14vw, 12rem);
+  font-weight: 900;
+  color: #ffffff04;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.06em;
+  font-family: var(--font-sans);
+}
+
 ::selection {
   background: var(--accent);
   color: var(--bg);
@@ -50,14 +67,16 @@ a:focus-visible {
 }
 
 h1, h2, h3, h4 {
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 0.5em;
-  letter-spacing: -0.015em;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 40px;
+  letter-spacing: -0.025em;
 }
-h1 { font-size: 2.75rem; }
-h2 { font-size: 2.25rem; }
-h3 { font-size: 1.5rem; }
+h1 { font-size: 2.75rem; font-weight: 800; letter-spacing: -0.04em; }
+h2 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; }
+h3 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 16px; }
+
+section:not(#hero) h2::after { content: '.'; color: var(--accent); }
 
 p { margin: 0 0 1em; }
 
@@ -73,32 +92,21 @@ code, kbd, .mono {
 }
 
 section {
-  padding-block: 72px;
+  padding-block: 80px;
   position: relative;
-  counter-increment: section;
+  overflow: hidden;
 }
+section:not(#hero) { counter-increment: section; }
 section + section { border-top: 1px solid var(--border-soft); }
 #hero { counter-increment: none; }
 
 .eyebrow {
   font-family: var(--font-mono);
-  color: var(--fg-dim);
-  font-size: 0.8125rem;
-  letter-spacing: 0.06em;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.eyebrow::before {
-  content: counter(section, decimal-leading-zero);
-  color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-sm);
-  padding: 1px 8px;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  color: var(--fg-mute);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
 }
 
 .card {
@@ -148,6 +156,6 @@ section + section { border-top: 1px solid var(--border-soft); }
 
 @media (max-width: 768px) {
   h1 { font-size: 2.25rem; }
-  h2 { font-size: 1.625rem; }
-  section { padding-block: 56px; }
+  h2 { font-size: 1.75rem; }
+  section { padding-block: 64px; }
 }

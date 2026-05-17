@@ -1,20 +1,55 @@
 ---
 import tech from '@/data/tech.md?raw';
 const items = tech.trim().split('\n').filter((l) => l.startsWith('- ')).map((l) => l.slice(2));
+const pairs = items.map((i) => {
+  const idx = i.indexOf('：');
+  return idx > -1
+    ? { key: i.slice(0, idx), val: i.slice(idx + 1) }
+    : { key: i, val: '' };
+});
 ---
 <section id="tech" class="container">
-  <div class="eyebrow">// 平台與工具</div>
-  <h2>## 技術細節</h2>
-  <div class="card">
-    <ul>
-      {items.map((i) => (
-        <li class="mono"><span class="dim">$</span> {i}</li>
-      ))}
-    </ul>
-  </div>
+  <div class="eyebrow">平台與工具</div>
+  <h2>技術細節</h2>
+  <dl class="tech-grid">
+    {pairs.map(({ key, val }) => (
+      <div class="tech-cell">
+        <dt class="cell-key">{key}</dt>
+        <dd class="cell-val">{val || '待補'}</dd>
+      </div>
+    ))}
+  </dl>
 </section>
 
 <style>
-  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-  .dim { color: var(--accent); margin-right: 8px; }
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 680px;
+    margin: 0;
+  }
+  .tech-cell {
+    background: var(--surface);
+    padding: 22px 24px;
+    display: grid;
+    gap: 8px;
+  }
+  .cell-key {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--fg-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .cell-val {
+    font-size: 0.9375rem;
+    color: var(--fg);
+    line-height: 1.5;
+    margin: 0;
+  }
 </style>

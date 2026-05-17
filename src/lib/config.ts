@@ -1,7 +1,7 @@
 export const SITE = {
   title: 'NTUCPCPC 2026',
   description: '臺灣大學程式解題社程式解題競賽 2026',
-  registerUrl: 'https://forms.gle/REPLACE_ME',
+  registerUrl: 'https://forms.gle/ELeLKN6oM1kRqpPi6',
   email: 'ntucpc@csie.ntu.edu.tw',
   clubUrl: 'https://ntucpc.org/',
 } as const;

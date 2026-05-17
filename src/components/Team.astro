@@ -1,20 +1,48 @@
 ---
 import team from '@/data/team.md?raw';
 const items = team.trim().split('\n').filter((l) => l.startsWith('- ')).map((l) => l.slice(2));
+const pairs = items.map((i) => {
+  const idx = i.indexOf('：');
+  return idx > -1
+    ? { role: i.slice(0, idx), desc: i.slice(idx + 1) }
+    : { role: i, desc: '' };
+});
 ---
 <section id="team" class="container">
-  <div class="eyebrow">// 工作人員</div>
-  <h2>## 籌備團隊</h2>
-  <div class="card">
-    <ul>
-      {items.map((i) => (
-        <li set:html={i.replace(/：/, '<span class="sep">: </span>')} />
-      ))}
-    </ul>
-  </div>
+  <div class="eyebrow">工作人員</div>
+  <h2>籌備團隊</h2>
+  <dl class="team-list">
+    {pairs.map(({ role, desc }) => (
+      <div class="team-row">
+        <dt class="role">{role}</dt>
+        <dd class="desc">{desc}</dd>
+      </div>
+    ))}
+  </dl>
 </section>
 
 <style>
-  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-  .sep { color: var(--accent); font-family: var(--font-mono); }
+  .team-list { margin: 0; display: grid; gap: 0; max-width: 680px; }
+  .team-row {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 20px;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--border-soft);
+    align-items: baseline;
+  }
+  .team-row:last-child { border-bottom: none; }
+  .role {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .desc {
+    font-size: 0.9375rem;
+    color: var(--fg);
+    line-height: 1.65;
+    margin: 0;
+  }
 </style>

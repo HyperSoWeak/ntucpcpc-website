@@ -4,8 +4,8 @@ import { getState } from '@/lib/countdown';
 const state = getState(new Date(), DATES.registerOpen, DATES.registerClose);
 ---
 <section id="register" class="container">
-  <div class="eyebrow">// 報名</div>
-  <h2>## $ register --team</h2>
+  <div class="eyebrow">報名資格</div>
+  <h2>報名</h2>
   <div class="card register-card">
     <ul class="checklist mono">
       <li><span class="ok">✓</span> 高中職以下（含應屆畢業生）</li>
@@ -19,12 +19,12 @@ const state = getState(new Date(), DATES.registerOpen, DATES.registerClose);
     )}
     {state === 'pending' && (
       <button class="btn big" disabled>
-        pending: 報名 2026-05-18 開放
+        報名 2026-05-18 開放
       </button>
     )}
     {state === 'closed' && (
       <button class="btn big" disabled>
-        closed: 已截止
+        報名已截止
       </button>
     )}
     <p class="hint mono">送出後會收到 email 確認，未收到請聯絡 {SITE.email}</p>
@@ -32,9 +32,10 @@ const state = getState(new Date(), DATES.registerOpen, DATES.registerClose);
 </section>
 
 <style>
-  .register-card { display: grid; gap: 20px; }
-  .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-  .ok { color: var(--accent); margin-right: 8px; }
-  .btn.big { padding: 14px 28px; font-size: 1.1rem; justify-self: start; }
-  .hint { color: var(--fg-dim); font-size: 0.85rem; margin: 0; }
+  .register-card { display: grid; gap: 24px; max-width: 520px; }
+  .checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .checklist li { display: flex; align-items: center; gap: 10px; font-size: 0.975rem; }
+  .ok { color: var(--accent); font-weight: 600; }
+  .btn.big { padding: 14px 28px; font-size: 1rem; font-weight: 700; justify-self: start; letter-spacing: -0.01em; }
+  .hint { color: var(--fg-mute); font-size: 0.8rem; margin: 0; }
 </style>

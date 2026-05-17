@@ -2,16 +2,31 @@
 import { SITE } from '@/lib/config';
 ---
 <section id="contact" class="container">
-  <div class="eyebrow">// 找我們</div>
-  <h2>## 聯絡我們</h2>
-  <div class="card contact">
-    <div class="line"><span class="key mono">email</span><a href={`mailto:${SITE.email}`}>{SITE.email}</a></div>
-    <div class="line"><span class="key mono">web</span><a href={SITE.clubUrl} target="_blank" rel="noopener">{SITE.clubUrl}</a></div>
-  </div>
+  <div class="eyebrow">找我們</div>
+  <h2>聯絡我們</h2>
+  <dl class="contact-list">
+    <div class="contact-row">
+      <dt class="key">email</dt>
+      <dd class="val"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+    </div>
+    <div class="contact-row">
+      <dt class="key">web</dt>
+      <dd class="val"><a href={SITE.clubUrl} target="_blank" rel="noopener">{SITE.clubUrl}</a></dd>
+    </div>
+  </dl>
 </section>
 
 <style>
-  .contact { display: grid; gap: 12px; }
-  .line { display: flex; gap: 16px; align-items: baseline; }
-  .key { color: var(--accent); min-width: 60px; font-size: 0.875rem; }
+  .contact-list { margin: 0; display: grid; gap: 20px; }
+  .contact-row { display: flex; align-items: baseline; gap: 24px; }
+  .key {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    min-width: 48px;
+  }
+  .val { margin: 0; font-size: 1.05rem; }
+  .val a { color: var(--link); text-decoration: none; }
+  .val a:hover { text-decoration: underline; }
 </style>
