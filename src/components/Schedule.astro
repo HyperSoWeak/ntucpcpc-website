@@ -87,4 +87,16 @@ const stages = [
     font-weight: 400;
   }
   .tl-date { font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
+
+  @media (max-width: 540px) {
+    .tl-row {
+      grid-template-columns: 18px 1fr;
+      grid-template-rows: auto auto;
+      row-gap: 4px;
+    }
+    .tl-dot-col { grid-row: 1 / 3; }
+    .tl-idx { display: none; }
+    .tl-stage { grid-column: 2; }
+    .tl-date { grid-column: 2; white-space: normal; }
+  }
 </style>

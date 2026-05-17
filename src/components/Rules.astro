@@ -111,6 +111,10 @@ const common = [
   }
   .panel li:last-child { border-bottom: none; }
   .panel strong { color: var(--accent); font-weight: 600; }
+
+  @media (max-width: 540px) {
+    .tab-pills { flex-wrap: wrap; }
+  }
 </style>
 
 <script>
