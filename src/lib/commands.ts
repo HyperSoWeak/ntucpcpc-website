@@ -29,7 +29,7 @@ export function run(input: string): Result {
   const [cmd, ...args] = trimmed.split(/\s+/);
 
   if (cmd === 'sudo') {
-    return { lines: ['permission denied: are you a 工作人員 ?'] };
+    return { lines: ['permission denied: are you staff?'] };
   }
 
   const handler = registry.get(cmd);
@@ -58,9 +58,9 @@ register('help', () => ({
 
 register('about', () => ({
   lines: [
-    '臺大程式解題社 (NTUCPC) — established to keep',
-    'competitive programming alive among taiwanese students.',
-    'this competition (NTUCPCPC) targets high-school and below.',
+    'NTU Competitive Programming Club (NTUCPC) — keeping',
+    'competitive programming alive among Taiwanese students.',
+    'NTUCPCPC targets high-school students and below.',
   ],
 }));
 
