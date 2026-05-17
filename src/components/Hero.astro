@@ -3,12 +3,14 @@ import { SITE } from '@/lib/config';
 import Countdown from './Countdown.astro';
 ---
 <section id="hero" class="hero container">
+  <img src="/logo.png" alt="NTUCPC" class="hero-logo" />
+
   <button class="prompt mono" id="hero-prompt" aria-label="open terminal">
     <span class="ps1">$</span>
     <span class="cmd">./ntucpcpc --year 2026</span>
   </button>
 
-  <h1 class="title">NTUCPCPC</h1>
+  <h1 class="title"><span class="t-ntu">NTU</span><span class="t-cpc">CPCPC</span></h1>
   <div class="rule" aria-hidden="true">━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
   <p class="subtitle mono"># 程式解題社程式解題競賽 · 2026</p>
 
@@ -23,7 +25,14 @@ import Countdown from './Countdown.astro';
 </section>
 
 <style>
-  .hero { padding-block: 96px 64px; }
+  .hero { padding-block: 72px 64px; }
+
+  .hero-logo {
+    width: 80px; height: 80px;
+    object-fit: contain;
+    margin-bottom: 24px;
+    display: block;
+  }
 
   .prompt {
     color: var(--fg-dim);
@@ -44,8 +53,9 @@ import Countdown from './Countdown.astro';
     line-height: 1;
     margin: 0 0 12px;
     font-weight: 700;
-    color: var(--fg);
   }
+  .t-ntu { color: var(--accent); }
+  .t-cpc { color: var(--fg); }
 
   .rule {
     font-family: var(--font-mono);
