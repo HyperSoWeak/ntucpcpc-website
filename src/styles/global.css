@@ -92,6 +92,13 @@ section + section { border-top: 1px solid var(--border-soft); }
   text-transform: uppercase;
   margin-bottom: 14px;
 }
+.eyebrow.path {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.8rem;
+}
+.eyebrow.path .tilde { color: var(--accent); }
+.eyebrow.path .slug { color: var(--fg-dim); }
 
 .card {
   background: var(--surface);

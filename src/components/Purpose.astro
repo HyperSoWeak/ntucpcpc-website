@@ -3,7 +3,7 @@ import purpose from '@/data/purpose.md?raw';
 const paragraphs = purpose.trim().split(/\n\n+/);
 ---
 <section id="purpose" class="container">
-  <div class="eyebrow">為什麼舉辦這場比賽？</div>
+  <div class="eyebrow path"><span class="tilde">~</span><span class="slug">/purpose</span></div>
   <h2>宗旨</h2>
   <div class="prose">
     {paragraphs.map((p) => <p>{p}</p>)}
