@@ -18,10 +18,13 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
   </div>
 
   <div class="individual-block">
-    <div class="block-label">// 個人贊助</div>
+    <div class="tier-head">
+      <span class="tier-title">個人贊助</span>
+      <span class="tier-en">individual backers</span>
+    </div>
     <ul class="individual-list">
       {individuals.map((name) => (
-        <li class="individual-chip">{name}</li>
+        <li class="individual-chip"><span class="at">@</span>{name}</li>
       ))}
     </ul>
   </div>
@@ -58,13 +61,24 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
   .l-hrt  { max-height: 80px; }
   .l-msi  { max-height: 50px; }
 
-  .individual-block { margin-top: 40px; }
-  .block-label {
+  .individual-block {
+    margin-top: 38px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .tier-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .tier-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); }
+  .tier-en {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--fg-mute);
-    letter-spacing: 0.05em;
-    margin-bottom: 16px;
   }
   .individual-list {
     list-style: none;
@@ -75,13 +89,17 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
     gap: 10px;
   }
   .individual-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-size: 0.95rem;
     color: var(--fg);
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--accent-soft);
+    border: 1px solid #818cf840;
     border-radius: 999px;
-    padding: 8px 18px;
+    padding: 7px 16px;
   }
+  .individual-chip .at { font-family: var(--font-mono); color: var(--accent); }
 
   @media (max-width: 640px) {
     .sponsor-grid { grid-template-columns: 1fr; }
