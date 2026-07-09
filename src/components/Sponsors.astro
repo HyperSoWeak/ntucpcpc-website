@@ -1,13 +1,50 @@
 ---
+const sponsors = [
+  { name: 'Jane Street', logo: '/sponsors/jane-street.png', url: 'https://www.janestreet.com/' },
+  { name: 'Hudson River Trading', logo: '/sponsors/hrt.png', url: 'https://www.hudsonrivertrading.com/' },
+  { name: 'MSI', logo: '/sponsors/msi.png', url: 'https://www.msi.com/' },
+];
 ---
 <section id="sponsors" class="container">
   <div class="eyebrow">感謝</div>
   <h2>贊助單位</h2>
-  <div class="placeholder mono">
-    <span>// 待補</span>
+  <div class="sponsor-grid">
+    {sponsors.map((s) => (
+      <a class="sponsor-card" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+        <img src={s.logo} alt={s.name} loading="lazy" />
+      </a>
+    ))}
   </div>
 </section>
 
 <style>
-  .placeholder { color: var(--fg-mute); font-size: 0.875rem; }
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .sponsor-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 28px 24px;
+    min-height: 132px;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  .sponsor-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+  .sponsor-card img {
+    max-width: 100%;
+    max-height: 76px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 640px) {
+    .sponsor-grid { grid-template-columns: 1fr; }
+  }
 </style>
