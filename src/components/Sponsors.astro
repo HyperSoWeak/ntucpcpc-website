@@ -1,19 +1,29 @@
 ---
 const sponsors = [
-  { name: 'Jane Street', logo: '/sponsors/jane-street.png', url: 'https://www.janestreet.com/' },
-  { name: 'Hudson River Trading', logo: '/sponsors/hrt.png', url: 'https://www.hudsonrivertrading.com/' },
-  { name: 'MSI', logo: '/sponsors/msi.png', url: 'https://www.msi.com/' },
+  { name: 'Jane Street', logo: '/sponsors/jane-street.png', url: 'https://www.janestreet.com/', cls: 'l-jane' },
+  { name: 'Hudson River Trading', logo: '/sponsors/hrt.png', url: 'https://www.hudsonrivertrading.com/', cls: 'l-hrt' },
+  { name: 'MSI', logo: '/sponsors/msi.png', url: 'https://www.msi.com/', cls: 'l-msi' },
 ];
+const individuals = ['蘇柏瑄', '侯欣緯'];
 ---
 <section id="sponsors" class="container">
-  <div class="eyebrow">感謝</div>
+  <div class="eyebrow path"><span class="tilde">~</span><span class="slug">/sponsors</span></div>
   <h2>贊助單位</h2>
   <div class="sponsor-grid">
     {sponsors.map((s) => (
       <a class="sponsor-card" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
-        <img src={s.logo} alt={s.name} loading="lazy" />
+        <img class={s.cls} src={s.logo} alt={s.name} loading="lazy" />
       </a>
     ))}
+  </div>
+
+  <div class="individual-block">
+    <div class="block-label">// 個人贊助</div>
+    <ul class="individual-list">
+      {individuals.map((name) => (
+        <li class="individual-chip">{name}</li>
+      ))}
+    </ul>
   </div>
 </section>
 
@@ -27,7 +37,7 @@ const sponsors = [
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: #f4f4f5;
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 28px 24px;
@@ -40,8 +50,37 @@ const sponsors = [
   }
   .sponsor-card img {
     max-width: 100%;
-    max-height: 76px;
+    width: auto;
     object-fit: contain;
+  }
+  /* per-logo optical scale */
+  .l-jane { max-height: 40px; }
+  .l-hrt  { max-height: 80px; }
+  .l-msi  { max-height: 50px; }
+
+  .individual-block { margin-top: 40px; }
+  .block-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg-mute);
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+  .individual-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .individual-chip {
+    font-size: 0.95rem;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 18px;
   }
 
   @media (max-width: 640px) {
