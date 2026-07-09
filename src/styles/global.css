@@ -17,7 +17,7 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, #34d39912, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 50% 0%, #818cf812, transparent 60%),
     radial-gradient(circle at 1px 1px, #1f293760 1px, transparent 0) 0 0 / 32px 32px,
     var(--bg);
   counter-reset: section 0;
