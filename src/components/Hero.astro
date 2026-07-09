@@ -7,7 +7,7 @@ import Countdown from './Countdown.astro';
 
   <button class="prompt mono" id="hero-prompt" aria-label="open terminal">
     <span class="ps1">$</span>
-    <span class="cmd">./ntucpcpc --year 2026</span>
+    <span class="cmd">./ntucpcpc --year 2026<span class="cursor" aria-hidden="true"></span></span>
   </button>
 
   <h1 class="title"><span class="t-ntu">NTU</span><span class="t-cpc">CPCPC</span></h1>
@@ -46,6 +46,19 @@ import Countdown from './Countdown.astro';
   .prompt:hover { opacity: 0.75; }
   .prompt .ps1 { color: var(--accent); }
   .prompt .cmd { color: var(--fg); }
+  .cursor {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1.05em;
+    margin-left: 0.3ch;
+    translate: 0 0.14em;
+    background: var(--accent);
+    animation: cursor-blink 1.06s steps(1) infinite;
+  }
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    50.01%, 100% { opacity: 0; }
+  }
 
   .title {
     font-size: clamp(3rem, 9vw, 5.5rem);
