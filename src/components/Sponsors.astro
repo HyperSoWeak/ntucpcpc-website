@@ -1,19 +1,54 @@
 ---
 const sponsors = [
-  { name: 'Jane Street', logo: '/sponsors/jane-street.png', url: 'https://www.janestreet.com/', cls: 'l-jane' },
-  { name: 'Hudson River Trading', logo: '/sponsors/hrt.png', url: 'https://www.hudsonrivertrading.com/', cls: 'l-hrt' },
-  { name: 'MSI', logo: '/sponsors/msi.png', url: 'https://www.msi.com/', cls: 'l-msi' },
+  {
+    name: 'MSI',
+    logo: '/sponsors/msi.png',
+    url: 'https://www.msi.com/',
+    cls: 'l-msi',
+    desc: [
+      'MSI 微星科技成立於 1986 年，總部位於台灣，從主機板起家，現已發展為全球電競、AI 運算與尖端科技解決方案的領導品牌。近 40 年來，MSI 秉持不懈的創新精神穩步拓展產品線，涵蓋顯示卡、筆記型電腦、顯示器、桌上型電腦及其周邊設備，並進一步將技術延伸至伺服器、車用電子、EV 充電設備與企業 IT 佈局。',
+      '作為全球高效能運算的關鍵推手，MSI 完美結合極致工務與深厚的研發底蘊，以卓越效能、極致穩定性與工藝美學為核心，為全球玩家、數位創作者、企業用戶及各界專業人士打造最值得信賴的硬體設備。從追求極致的電競體驗到賦能多元產業應用，MSI 全方位滿足不同情境下的嚴苛需求，致力於讓科技回歸服務人類的本質，與使用者一同開啟更高效、精彩的智慧未來。',
+    ],
+  },
+  {
+    name: 'Jane Street',
+    logo: '/sponsors/jane-street.png',
+    url: 'https://www.janestreet.com/',
+    cls: 'l-jane',
+    desc: [
+      'Jane Street 創立於 2000 年，是一家以提供流動性為目的、量化技術為基礎的全球領先金融證券產品做市商，分別在紐約、倫敦、香港、新加坡和阿姆斯特丹設有總部和分公司。',
+      'Jane Street 非常注重公司文化與團隊精神，全力打造開放有趣的工作環境。員工每天可以穿 T 恤牛仔褲上班，享用辦公室裡豐富的零食和飲料，以及廚房精心烹飪的各國美食。辦公室設有健身房、圖書室、桌球和撞球桌等設施，真正做到寓工作於娛樂。',
+      '我們致力於培養新一代精英，員工薪酬待遇豐厚，優秀員工晉升管道廣闊。隨著公司的穩健發展，我們致力於提升公司的競爭力，因此希望從世界各地優秀院校招募頂尖人才加入我們的團隊！',
+    ],
+  },
+  {
+    name: 'Hudson River Trading',
+    logo: '/sponsors/hrt.png',
+    url: 'https://www.hudsonrivertrading.com/',
+    cls: 'l-hrt',
+    desc: null,
+  },
 ];
 const individuals = ['蘇柏瑄', '侯欣緯'];
 ---
 <section id="sponsors" class="container">
   <div class="eyebrow path"><span class="tilde">~</span><span class="slug">/sponsors</span></div>
   <h2>贊助單位</h2>
-  <div class="sponsor-grid">
+  <div class="sponsor-list">
     {sponsors.map((s) => (
-      <a class="sponsor-card" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
-        <img class={s.cls} src={s.logo} alt={s.name} loading="lazy" />
-      </a>
+      <article class="sponsor-row">
+        <a class="sponsor-logo" href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+          <img class={s.cls} src={s.logo} alt={s.name} loading="lazy" />
+        </a>
+        <div class="sponsor-body">
+          <h3 class="sponsor-name">
+            <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}<span class="ext">↗</span></a>
+          </h3>
+          {s.desc
+            ? s.desc.map((p) => <p>{p}</p>)
+            : <p class="tbd">// 待補</p>}
+        </div>
+      </article>
     ))}
   </div>
 
@@ -31,12 +66,22 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
 </section>
 
 <style>
-  .sponsor-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+  .sponsor-list {
+    display: flex;
+    flex-direction: column;
   }
-  .sponsor-card {
+  .sponsor-row {
+    display: flex;
+    gap: 32px;
+    padding: 32px 0;
+  }
+  .sponsor-row + .sponsor-row {
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .sponsor-logo {
+    flex: 0 0 200px;
+    align-self: flex-start;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,14 +89,14 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 28px 24px;
-    min-height: 132px;
+    min-height: 120px;
     transition: transform 150ms ease, box-shadow 150ms ease;
   }
-  .sponsor-card:hover {
+  .sponsor-logo:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card);
   }
-  .sponsor-card img {
+  .sponsor-logo img {
     max-width: 100%;
     width: auto;
     object-fit: contain;
@@ -60,6 +105,40 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
   .l-jane { max-height: 40px; }
   .l-hrt  { max-height: 80px; }
   .l-msi  { max-height: 50px; }
+
+  .sponsor-body { min-width: 0; }
+  .sponsor-name {
+    margin: 2px 0 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .sponsor-name a {
+    color: var(--fg);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+  .sponsor-name a:hover { color: var(--accent); }
+  .sponsor-name .ext {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--fg-mute);
+    margin-left: 6px;
+  }
+  .sponsor-name a:hover .ext { color: var(--accent); }
+
+  .sponsor-body p {
+    margin: 0 0 10px;
+    color: var(--fg-dim);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    text-align: justify;
+  }
+  .sponsor-body p:last-child { margin-bottom: 0; }
+  .sponsor-body p.tbd {
+    font-family: var(--font-mono);
+    color: var(--fg-mute);
+    font-size: 0.85rem;
+  }
 
   .individual-block {
     margin-top: 38px;
@@ -102,6 +181,8 @@ const individuals = ['蘇柏瑄', '侯欣緯'];
   .individual-chip .at { font-family: var(--font-mono); color: var(--accent); }
 
   @media (max-width: 640px) {
-    .sponsor-grid { grid-template-columns: 1fr; }
+    .sponsor-row { flex-direction: column; gap: 18px; }
+    .sponsor-logo { flex-basis: auto; width: 100%; }
+    .sponsor-body p { text-align: left; }
   }
 </style>
